@@ -9,7 +9,7 @@ from kivy.uix.popup import Popup
 from kivy.graphics import Color, Rectangle
 from datetime import datetime
 
-API_KEY = 'YOUR_API_KEY_HERE'  # Your OpenWeatherMap API Key
+API_KEY = '5f2ab9011635a307e29aaa7900eeb68f'  # Your OpenWeatherMap API Key
 
 class WeatherApp(App):
     def build(self):
