@@ -1,4 +1,5 @@
 import requests
+import certifi
 from kivy.app import App
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.boxlayout import BoxLayout
@@ -77,10 +78,6 @@ class WeatherApp(App):
                     f"Hava Durumu: {self.weather['description']}\n"
                     f"Güneş Doğumu: {self.weather['sunrise']}\n"
                     f"Güneş Batımı: {self.weather['sunset']}\n"
-                    f"Dalgaların Yüksekliği: {self.weather['wave_height']} m\n"
-                    f"Dalgaların Hızı: {self.weather['wave_speed']} m/s\n"
-                    f"Gelgit Yüksekliği: {self.weather['tide_height']} m\n"
-                    f"Gelgit Süresi: {self.weather['tide_length']} saat\n"
                 )
                 self.result_label = Label(text=result_text, size_hint_y=None, height=300, 
                                            font_size=24, halign='center', valign='middle', 
@@ -92,19 +89,18 @@ class WeatherApp(App):
 
     def fetch_weather(self, city):
         try:
+            # Fetch weather data from OpenWeatherMap API
             response = requests.get(
-                f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric'
+                f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric',
+                verify=certifi.where()  # Use certifi for SSL verification
             )
+            print("Response Status Code:", response.status_code)  # Debugging
+            print("Response Content:", response.content)  # Debugging
+
             data = response.json()
             if response.status_code == 200:
                 sunrise = datetime.fromtimestamp(data['sys']['sunrise']).strftime('%H:%M:%S')
                 sunset = datetime.fromtimestamp(data['sys']['sunset']).strftime('%H:%M:%S')
-
-                # Placeholder for wave and tide data
-                wave_height = 1.0  # Example data
-                wave_speed = 0.5   # Example data
-                tide_height = 0.8  # Example data
-                tide_length = 12   # Example data
 
                 return {
                     'city': data['name'],
@@ -113,16 +109,12 @@ class WeatherApp(App):
                     'wind_speed': data['wind']['speed'],
                     'description': data['weather'][0]['description'],
                     'sunrise': sunrise,
-                    'sunset': sunset,
-                    'wave_height': wave_height,
-                    'wave_speed': wave_speed,
-                    'tide_height': tide_height,
-                    'tide_length': tide_length
+                    'sunset': sunset
                 }
             else:
                 return None
         except Exception as e:
-            print("Hava durumu verisi alınırken hata:", e)
+            print("Error fetching weather data:", e)
             return None
 
     def show_popup(self, title, message):
