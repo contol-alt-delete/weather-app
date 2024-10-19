@@ -1,5 +1,8 @@
 [app]
 
+# Permissions
+android.permissions = INTERNET
+
 # (str) Title of your application
 title = Hava Durumu Uygulaması
 
@@ -29,7 +32,7 @@ source.include_exts = py,png,jpg,kv,atlas
 #source.exclude_patterns = license,images/*/*.jpg
 
 # (str) Application versioning (method 1)
-version = 0.1
+version = 1.0.2.4
 
 # (str) Application versioning (method 2)
 # version.regex = __version__ = ['"](.*)['"]
@@ -37,7 +40,7 @@ version = 0.1
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy
+requirements = python3,kivy,requests,certifi
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
